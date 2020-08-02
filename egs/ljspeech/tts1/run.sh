@@ -20,7 +20,7 @@ seed=1       # random seed number
 resume=""    # the snapshot path to resume (if set empty, no effect)
 
 # feature extraction related
-fs=22050      # sampling frequency
+fs=48000      # sampling frequency
 fmax=7600     # maximum frequency
 fmin=80       # minimum frequency
 n_mels=80     # number of mel basis
@@ -33,7 +33,7 @@ win_length="" # window length
 trans_type="char"
 
 # config files
-train_config=conf/train_pytorch_tacotron2.yaml # you can select from conf or conf/tuning.
+train_config=conf/train_pytorch_transformer.v3.single.yaml # you can select from conf or conf/tuning.
                                                # now we support tacotron2, transformer, and fastspeech
                                                # see more info in the header of each config.
 decode_config=conf/decode.yaml
@@ -42,7 +42,7 @@ decode_config=conf/decode.yaml
 teacher_model_path=""
 teacher_decode_config=conf/decode_for_knowledge_dist.yaml
 do_filtering=false     # whether to do filtering using focus rate
-focus_rate_thres=0.65  # for phn taco2 around 0.65, phn transformer around 0.9
+focus_rate_thres=0.9  # for phn taco2 around 0.65, phn transformer around 0.9
                        # if you want to do filtering please carefully check this threshold
 
 # decoding related
@@ -56,7 +56,7 @@ eval_tts_model=true                            # true: evaluate tts model, false
 wer=true                                       # true: evaluate CER & WER, false: evaluate only CER
 
 # root directory of db
-db_root=downloads
+db_root=/mydrive/sample
 
 # exp tag
 tag="" # tag for managing experiments.
@@ -82,7 +82,7 @@ if [ ${stage} -le 0 ] && [ ${stop_stage} -ge 0 ]; then
     ### Task dependent. You have to make data the following preparation part by yourself.
     ### But you can utilize Kaldi recipes in most cases
     echo "stage 0: Data preparation"
-    local/data_prep.sh ${db_root}/LJSpeech-1.1 data/${trans_type}_train ${trans_type}
+    local/data_prep.sh "${db_root}" data/${trans_type}_train ${trans_type}
     utils/validate_data_dir.sh --no-feats data/${trans_type}_train
 fi
 
@@ -116,7 +116,7 @@ if [ ${stage} -le 1 ] && [ ${stop_stage} -ge 1 ]; then
     utils/subset_data_dir.sh --first data/${trans_type}_train ${n} data/${train_set}
 
     # compute statistics for global mean-variance normalization
-    compute-cmvn-stats scp:data/${train_set}/feats.scp data/${train_set}/cmvn.ark
+    ../../../utils/compute-cmvn-stats.py scp:data/${train_set}/feats.scp data/${train_set}/cmvn.ark
 
     # dump features for training
     dump.sh --cmd "$train_cmd" --nj ${nj} --do_delta false \

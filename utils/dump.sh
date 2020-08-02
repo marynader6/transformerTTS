@@ -65,7 +65,7 @@ if ${do_delta}; then
         || exit 1
 else
     ${cmd} JOB=1:${nj} ${logdir}/dump_feature.JOB.log \
-        apply-cmvn --norm-vars=true ${cvmnark} scp:${logdir}/feats.JOB.scp ark:- \| \
+        ../../../utils/apply-cmvn.py --norm-vars=true ${cvmnark} scp:${logdir}/feats.JOB.scp ark:- \| \
         copy-feats.py --verbose ${verbose} --out-filetype ${filetype} \
             --compress=${compress} --compression-method=2 ${write_num_frames_opt} \
             ark:- ark,scp:${dumpdir}/feats.JOB.ark,${dumpdir}/feats.JOB.scp \
