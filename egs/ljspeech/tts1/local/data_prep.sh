@@ -32,7 +32,7 @@ find ${db} -follow -name "*.wav" | sort | while read -r filename;do
     echo "${id} ${filename}" >> ${scp}
     echo "${id} LJ" >> ${utt2spk}
 done
-utils/utt2spk_to_spk2utt.pl ${utt2spk} > ${spk2utt}
+../../../tools/kaldi/egs/wsj/s5/utils/utt2spk_to_spk2utt.pl ${utt2spk} > ${spk2utt}
 echo "finished making wav.scp, utt2spk, spk2utt."
 
 # make text
