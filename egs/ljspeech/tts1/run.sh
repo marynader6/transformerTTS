@@ -56,12 +56,12 @@ eval_tts_model=true                            # true: evaluate tts model, false
 wer=true                                       # true: evaluate CER & WER, false: evaluate only CER
 
 # root directory of db
-db_root=/mydrive/sample
+db_root=/mydrive/datasample
 
 # exp tag
 tag="" # tag for managing experiments.
 
-. utils/parse_options.sh || exit 1;
+. ../../../tools/kaldi/egs/wsj/s5/utils/parse_options.sh || exit 1;
 
 # Set bash to 'debug' mode, it will exit on :
 # -e 'error', -u 'undefined variable', -o ... 'error in pipeline', -x 'print commands',
@@ -83,7 +83,7 @@ if [ ${stage} -le 0 ] && [ ${stop_stage} -ge 0 ]; then
     ### But you can utilize Kaldi recipes in most cases
     echo "stage 0: Data preparation"
     local/data_prep.sh "${db_root}" data/${trans_type}_train ${trans_type}
-    utils/validate_data_dir.sh --no-feats data/${trans_type}_train
+    ../../../tools/kaldi/egs/wsj/s5/utils/validate_data_dir.sh --no-feats data/${trans_type}_train
 fi
 
 feat_tr_dir=${dumpdir}/${train_set}; mkdir -p ${feat_tr_dir}

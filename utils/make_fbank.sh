@@ -26,13 +26,13 @@ e.g.: $0 data/train exp/make_fbank/train mfcc
 Note: <log-dir> defaults to <data-dir>/log, and <fbank-dir> defaults to <data-dir>/data
 Options:
   --nj <nj>                                        # number of parallel jobs
-  --cmd (utils/run.pl|utils/queue.pl <queue opts>) # how to run jobs.
+  --cmd (../../../tools/kaldi/egs/wsj/s5/utils/run.pl|../../../tools/kaldi/egs/wsj/s5/utils/queue.pl <queue opts>) # how to run jobs.
   --filetype <mat|hdf5|sound.hdf5>                 # Specify the format of feats file
 EOF
 )
 echo "$0 $*"  # Print the command line for logging
 
-. parse_options.sh || exit 1;
+. ../../../tools/kaldi/egs/wsj/s5/utils/parse_options.sh || exit 1;
 
 if [ $# -lt 1 ] || [ $# -gt 3 ]; then
     echo "${help_message}"
@@ -70,14 +70,14 @@ fi
 
 scp=${data}/wav.scp
 
-utils/validate_data_dir.sh --no-text --no-feats ${data} || exit 1;
+../../../tools/kaldi/egs/wsj/s5/utils/validate_data_dir.sh --no-text --no-feats ${data} || exit 1;
 
 split_scps=""
 for n in $(seq ${nj}); do
     split_scps="${split_scps} ${logdir}/wav.${n}.scp"
 done
 
-utils/split_scp.pl ${scp} ${split_scps} || exit 1;
+../../../tools/kaldi/egs/wsj/s5/utils/split_scp.pl ${scp} ${split_scps} || exit 1;
 
 if ${write_utt2num_frames}; then
   write_num_frames_opt="--write-num-frames=ark,t:${logdir}/utt2num_frames.JOB"
@@ -98,7 +98,7 @@ if [ -f ${data}/segments ]; then
         split_segments="${split_segments} ${logdir}/segments.${n}"
     done
 
-    utils/split_scp.pl ${data}/segments ${split_segments}
+    ../../../tools/kaldi/egs/wsj/s5/utils/split_scp.pl ${data}/segments ${split_segments}
 
     ${cmd} JOB=1:${nj} ${logdir}/make_fbank_${name}.JOB.log \
         compute-fbank-feats.py \
@@ -124,7 +124,7 @@ else
     split_scps="${split_scps} ${logdir}/wav.${n}.scp"
   done
 
-  utils/split_scp.pl ${scp} ${split_scps}
+  ../../../tools/kaldi/egs/wsj/s5/utils/split_scp.pl ${scp} ${split_scps}
 
   ${cmd} JOB=1:${nj} ${logdir}/make_fbank_${name}.JOB.log \
       compute-fbank-feats.py \

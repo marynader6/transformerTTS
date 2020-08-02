@@ -34,11 +34,11 @@ cmd_backend='local'
 if [ "${cmd_backend}" = local ]; then
 
     # The other usage
-    export train_cmd="run.pl"
+    export train_cmd="../../../tools/kaldi/egs/wsj/s5/utils/run.pl"
     # Used for "*_train.py": "--gpu" is appended optionally by run.sh
-    export cuda_cmd="run.pl"
+    export cuda_cmd="../../../tools/kaldi/egs/wsj/s5/utils/run.pl"
     # Used for "*_recog.py"
-    export decode_cmd="run.pl"
+    export decode_cmd="../../../tools/kaldi/egs/wsj/s5/utils/run.pl"
 
 # "qsub" (SGE, Torque, PBS, etc.)
 elif [ "${cmd_backend}" = sge ]; then
