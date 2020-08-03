@@ -22,7 +22,7 @@ EOF
 
 echo "$0 $*" 1>&2 # Print the command line for logging
 
-. parse_options.sh || exit 1;
+. ../../../tools/kaldi/egs/wsj/s5/utils/parse_options.sh || exit 1;
 
 if [ $# -lt 2 ] || [ $# -gt 3 ]; then
     echo "${help_message}" 1>&2
@@ -41,13 +41,12 @@ else
 fi
 mkdir -p ${logdir}
 
-nj=$((nj<$(<"${scp}" wc -l)?nj:$(<"${scp}" wc -l)))
 split_scps=""
 for n in $(seq ${nj}); do
-    split_scps="${split_scps} ${logdir}/feats.${n}.scp"
+    split_scps="${split_scps} ${logdir}/feats.6.scp"
 done
 
-utils/split_scp.pl ${scp} ${split_scps}
+../../../tools/kaldi/egs/wsj/s5/utils/split_scp.pl ${scp} ${split_scps} 
 
 if [ -n "${preprocess_conf}" ]; then
     preprocess_opt="--preprocess-conf ${preprocess_conf}"

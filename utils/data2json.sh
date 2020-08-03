@@ -38,7 +38,7 @@ Options:
   --verbose <num>                                  # Default: 0
 EOF
 )
-. utils/parse_options.sh
+. ../../../tools/kaldi/egs/wsj/s5/utils/parse_options.sh
 
 if [ $# != 2 ]; then
     echo "${help_message}" 1>&2
