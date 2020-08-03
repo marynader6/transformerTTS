@@ -70,7 +70,7 @@ fi
 
 scp=${data}/wav.scp
 
-../../../tools/kaldi/egs/wsj/s5/utils/validate_data_dir.sh --no-text --no-feats ${data} || exit 1;
+validate_data_dir.sh --no-text --no-feats ${data} || exit 1;
 
 split_scps=""
 for n in $(seq ${nj}); do
