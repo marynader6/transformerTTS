@@ -131,7 +131,7 @@ if ! $no_text; then
     echo "$0: text contains $n_non_print lines with non-printable characters" &&\
     exit 1;
   fi
-  ../../../tools/kaldi/egs/wsj/s5/utils/validate_text.pl $data/text || exit 1;
+  utils/validate_text.pl $data/text || exit 1;
   check_sorted_and_uniq $data/text
   text_len=`cat $data/text | wc -l`
   illegal_sym_list="<s> </s> #0"

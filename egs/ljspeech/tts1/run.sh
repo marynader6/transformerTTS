@@ -61,7 +61,7 @@ db_root=/mydrive/datasample
 # exp tag
 tag="" # tag for managing experiments.
 
-. ../../../tools/kaldi/egs/wsj/s5/utils/parse_options.sh || exit 1;
+. utils/parse_options.sh || exit 1;
 
 # Set bash to 'debug' mode, it will exit on :
 # -e 'error', -u 'undefined variable', -o ... 'error in pipeline', -x 'print commands',
@@ -83,7 +83,7 @@ if [ ${stage} -le 0 ] && [ ${stop_stage} -ge 0 ]; then
     ### But you can utilize Kaldi recipes in most cases
     echo "stage 0: Data preparation"
     local/data_prep.sh "${db_root}" data/${trans_type}_train ${trans_type}
-    ../../../utils/validate_data_dir.sh --no-feats data/${trans_type}_train
+    utils/validate_data_dir.sh --no-feats data/${trans_type}_train
 fi
 
 feat_tr_dir=${dumpdir}/${train_set}; mkdir -p ${feat_tr_dir}
@@ -109,11 +109,11 @@ if [ ${stage} -le 1 ] && [ ${stop_stage} -ge 1 ]; then
         ${fbankdir}
 
     # make a dev set
-    ../../../tools/kaldi/egs/wsj/s5/utils/subset_data_dir.sh --last data/${trans_type}_train 500 data/${trans_type}_deveval
-    ../../../tools/kaldi/egs/wsj/s5/utils/subset_data_dir.sh --last data/${trans_type}_deveval 250 data/${eval_set}
-    ../../../tools/kaldi/egs/wsj/s5/utils/subset_data_dir.sh --first data/${trans_type}_deveval 250 data/${dev_set}
+    utils/subset_data_dir.sh --last data/${trans_type}_train 500 data/${trans_type}_deveval
+    utils/subset_data_dir.sh --last data/${trans_type}_deveval 250 data/${eval_set}
+    utils/subset_data_dir.sh --first data/${trans_type}_deveval 250 data/${dev_set}
     n=$(( $(wc -l < data/${trans_type}_train/wav.scp) - 500 ))
-    ../../../tools/kaldi/egs/wsj/s5/utils/subset_data_dir.sh --first data/${trans_type}_train ${n} data/${train_set}
+    utils/subset_data_dir.sh --first data/${trans_type}_train ${n} data/${train_set}
 
     # compute statistics for global mean-variance normalization
     ../../../utils/compute-cmvn-stats.py scp:data/${train_set}/feats.scp data/${train_set}/cmvn.ark

@@ -15,7 +15,7 @@ write_utt2num_frames=true
 filetype='mat'  # mat or hdf5
 help_message="Usage: $0 <scp> <cmvnark> <logdir> <dumpdir>"
 
-. ../../../tools/kaldi/egs/wsj/s5/utils/parse_options.sh
+. utils/parse_options.sh
 
 scp=$1
 cvmnark=$2
@@ -37,7 +37,7 @@ dumpdir=$(perl -e '($dir,$pwd)= @ARGV; if($dir!~m:^/:) { $dir = "$pwd/$dir"; } p
 for n in $(seq ${nj}); do
     # the next command does nothing unless $dumpdir/storage/ exists, see
     # utils/create_data_link.pl for more info.
-    ../../../tools/kaldi/egs/wsj/s5/utils/create_data_link.pl ${dumpdir}/feats.${n}.ark
+    utils/create_data_link.pl ${dumpdir}/feats.${n}.ark
 done
 
 if ${write_utt2num_frames}; then
@@ -52,7 +52,7 @@ for n in $(seq ${nj}); do
     split_scps="$split_scps $logdir/feats.$n.scp"
 done
 
-../../../tools/kaldi/egs/wsj/s5/utils/split_scp.pl ${scp} ${split_scps} || exit 1;
+utils/split_scp.pl ${scp} ${split_scps} || exit 1;
 
 # dump features
 if ${do_delta}; then
