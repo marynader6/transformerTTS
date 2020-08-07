@@ -96,7 +96,7 @@ if [ ${stage} -le 1 ] && [ ${stop_stage} -ge 1 ]; then
 
     # Generate the fbank features; by default 80-dimensional fbanks on each frame
     fbankdir=fbank
-    make_fbank.sh --cmd "${train_cmd}" --nj ${nj} \
+    make_fbank.sh --nj ${nj} \
         --fs ${fs} \
         --fmax "${fmax}" \
         --fmin "${fmin}" \
@@ -119,11 +119,11 @@ if [ ${stage} -le 1 ] && [ ${stop_stage} -ge 1 ]; then
     ../../../utils/compute-cmvn-stats.py scp:data/${train_set}/feats.scp data/${train_set}/cmvn.ark
 
     # dump features for training
-    dump.sh --cmd "$train_cmd" --nj ${nj} --do_delta false \
+    dump.sh  --nj ${nj} --do_delta false \
         data/${train_set}/feats.scp data/${train_set}/cmvn.ark exp/dump_feats/${trans_type}_train ${feat_tr_dir}
-    dump.sh --cmd "$train_cmd" --nj ${nj} --do_delta false \
+    dump.sh  --nj ${nj} --do_delta false \
         data/${dev_set}/feats.scp data/${train_set}/cmvn.ark exp/dump_feats/${trans_type}_dev ${feat_dt_dir}
-    dump.sh --cmd "$train_cmd" --nj ${nj} --do_delta false \
+    dump.sh  --nj ${nj} --do_delta false \
         data/${eval_set}/feats.scp data/${train_set}/cmvn.ark exp/dump_feats/${trans_type}_eval ${feat_ev_dir}
 fi
 
