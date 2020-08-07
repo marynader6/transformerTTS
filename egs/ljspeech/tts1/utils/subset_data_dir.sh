@@ -110,7 +110,7 @@ elif $perspk; then
          skip=1; while(n*(skip+1) <= NF-1) { skip++; }
          for(x=2; x<=NF && x <= (n*skip+1); x += skip) { printf("%s ", $x); }
          printf("\n"); }' <$srcdir/spk2utt >$destdir/spk2utt
-  ../../../tools/kaldi/egs/wsj/s5/utils/spk2utt_to_utt2spk.pl < $destdir/spk2utt > $destdir/utt2spk
+  utils/spk2utt_to_utt2spk.pl < $destdir/spk2utt > $destdir/utt2spk
 else
   if $shortest; then
     # Select $numutt shortest utterances.
@@ -119,67 +119,67 @@ else
     sort -n -k2 $destdir/tmp.len |
       awk '{print $1}' |
       head -$numutt >$destdir/tmp.uttlist
-    ../../../tools/kaldi/egs/wsj/s5/utils/filter_scp.pl $destdir/tmp.uttlist $srcdir/utt2spk >$destdir/utt2spk
+    utils/filter_scp.pl $destdir/tmp.uttlist $srcdir/utt2spk >$destdir/utt2spk
     rm $destdir/tmp.uttlist $destdir/tmp.len
   else
     # Select $numutt random utterances.
-    ../../../tools/kaldi/egs/wsj/s5/utils/subset_scp.pl $first_opt $numutt $srcdir/utt2spk > $destdir/utt2spk || exit 1;
+    utils/subset_scp.pl $first_opt $numutt $srcdir/utt2spk > $destdir/utt2spk || exit 1;
   fi
-  ../../../tools/kaldi/egs/wsj/s5/utils/utt2spk_to_spk2utt.pl < $destdir/utt2spk > $destdir/spk2utt
+  utils/utt2spk_to_spk2utt.pl < $destdir/utt2spk > $destdir/spk2utt
 fi
 
 # Perform filtering. utt2spk and spk2utt files already exist by this point.
 # Filter by utterance.
 [ -f $srcdir/feats.scp ] &&
-  ../../../tools/kaldi/egs/wsj/s5/utils/filter_scp.pl $destdir/utt2spk <$srcdir/feats.scp >$destdir/feats.scp
+  utils/filter_scp.pl $destdir/utt2spk <$srcdir/feats.scp >$destdir/feats.scp
 [ -f $srcdir/vad.scp ] &&
-  ../../../tools/kaldi/egs/wsj/s5/utils/filter_scp.pl $destdir/utt2spk <$srcdir/vad.scp >$destdir/vad.scp
+  utils/filter_scp.pl $destdir/utt2spk <$srcdir/vad.scp >$destdir/vad.scp
 [ -f $srcdir/utt2lang ] &&
-  ../../../tools/kaldi/egs/wsj/s5/utils/filter_scp.pl $destdir/utt2spk <$srcdir/utt2lang >$destdir/utt2lang
+  utils/filter_scp.pl $destdir/utt2spk <$srcdir/utt2lang >$destdir/utt2lang
 [ -f $srcdir/utt2dur ] &&
-  ../../../tools/kaldi/egs/wsj/s5/utils/filter_scp.pl $destdir/utt2spk <$srcdir/utt2dur >$destdir/utt2dur
+  utils/filter_scp.pl $destdir/utt2spk <$srcdir/utt2dur >$destdir/utt2dur
 [ -f $srcdir/utt2num_frames ] &&
-  ../../../tools/kaldi/egs/wsj/s5/utils/filter_scp.pl $destdir/utt2spk <$srcdir/utt2num_frames >$destdir/utt2num_frames
+  utils/filter_scp.pl $destdir/utt2spk <$srcdir/utt2num_frames >$destdir/utt2num_frames
 [ -f $srcdir/utt2uniq ] &&
-  ../../../tools/kaldi/egs/wsj/s5/utils/filter_scp.pl $destdir/utt2spk <$srcdir/utt2uniq >$destdir/utt2uniq
+  utils/filter_scp.pl $destdir/utt2spk <$srcdir/utt2uniq >$destdir/utt2uniq
 [ -f $srcdir/wav.scp ] &&
-  ../../../tools/kaldi/egs/wsj/s5/utils/filter_scp.pl $destdir/utt2spk <$srcdir/wav.scp >$destdir/wav.scp
+  utils/filter_scp.pl $destdir/utt2spk <$srcdir/wav.scp >$destdir/wav.scp
 [ -f $srcdir/utt2warp ] &&
-  ../../../tools/kaldi/egs/wsj/s5/utils/filter_scp.pl $destdir/utt2spk <$srcdir/utt2warp >$destdir/utt2warp
+  utils/filter_scp.pl $destdir/utt2spk <$srcdir/utt2warp >$destdir/utt2warp
 [ -f $srcdir/text ] &&
-  ../../../tools/kaldi/egs/wsj/s5/utils/filter_scp.pl $destdir/utt2spk <$srcdir/text >$destdir/text
+  utils/filter_scp.pl $destdir/utt2spk <$srcdir/text >$destdir/text
 
 # Filter by speaker.
 [ -f $srcdir/spk2warp ] &&
-  ../../../tools/kaldi/egs/wsj/s5/utils/filter_scp.pl $destdir/spk2utt <$srcdir/spk2warp >$destdir/spk2warp
+  utils/filter_scp.pl $destdir/spk2utt <$srcdir/spk2warp >$destdir/spk2warp
 [ -f $srcdir/spk2gender ] &&
-  ../../../tools/kaldi/egs/wsj/s5/utils/filter_scp.pl $destdir/spk2utt <$srcdir/spk2gender >$destdir/spk2gender
+  utils/filter_scp.pl $destdir/spk2utt <$srcdir/spk2gender >$destdir/spk2gender
 [ -f $srcdir/cmvn.scp ] &&
-  ../../../tools/kaldi/egs/wsj/s5/utils/filter_scp.pl $destdir/spk2utt <$srcdir/cmvn.scp >$destdir/cmvn.scp
+  utils/filter_scp.pl $destdir/spk2utt <$srcdir/cmvn.scp >$destdir/cmvn.scp
 
 # Filter by recording-id.
 if [ -f $srcdir/segments ]; then
-  ../../../tools/kaldi/egs/wsj/s5/utils/filter_scp.pl $destdir/utt2spk <$srcdir/segments >$destdir/segments
+  utils/filter_scp.pl $destdir/utt2spk <$srcdir/segments >$destdir/segments
   # Recording-ids are in segments.
   awk '{print $2}' $destdir/segments | sort | uniq >$destdir/reco
   # The next line overrides the command above for wav.scp, which would be incorrect.
   [ -f $srcdir/wav.scp ] &&
-    ../../../tools/kaldi/egs/wsj/s5/utils/filter_scp.pl $destdir/reco <$srcdir/wav.scp >$destdir/wav.scp
+    utils/filter_scp.pl $destdir/reco <$srcdir/wav.scp >$destdir/wav.scp
 else
   # No segments; recording-ids are in wav.scp.
   awk '{print $1}' $destdir/wav.scp | sort | uniq >$destdir/reco
 fi
 
 [ -f $srcdir/reco2file_and_channel ] &&
-  ../../../tools/kaldi/egs/wsj/s5/utils/filter_scp.pl $destdir/reco <$srcdir/reco2file_and_channel >$destdir/reco2file_and_channel
+  utils/filter_scp.pl $destdir/reco <$srcdir/reco2file_and_channel >$destdir/reco2file_and_channel
 [ -f $srcdir/reco2dur ] &&
-  ../../../tools/kaldi/egs/wsj/s5/utils/filter_scp.pl $destdir/reco <$srcdir/reco2dur >$destdir/reco2dur
+  utils/filter_scp.pl $destdir/reco <$srcdir/reco2dur >$destdir/reco2dur
 
 # Filter the STM file for proper sclite scoring.
 # Copy over the comments from STM file.
 [ -f $srcdir/stm ] &&
   (grep "^;;" $srcdir/stm
-   ../../../tools/kaldi/egs/wsj/s5/utils/filter_scp.pl $destdir/reco $srcdir/stm) >$destdir/stm
+   utils/filter_scp.pl $destdir/reco $srcdir/stm) >$destdir/stm
 
 rm $destdir/reco
 
